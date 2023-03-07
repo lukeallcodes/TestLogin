@@ -28,9 +28,9 @@ loginBtn.onclick = function login() {
     var password = document.getElementById('password').value;
     
     // Sign in with email and password
-    auth.signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        alert("Success!")
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            alert("Success!")
       })
       .catch((error) => {
         // Handle login errors
