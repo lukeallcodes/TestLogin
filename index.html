@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login Pop-up Example</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <button onclick="document.getElementById('login-modal').style.display='block'">Log In</button>
+
+    <div id="login-modal" >
+      <div id="login-modal-content">
+        <span id="login-modal-close" onclick="document.getElementById('login-modal').style.display='none'">&times;</span>
+        <h2>Login</h2>
+        <form>
+          <!-- Login form fields go here -->
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username"><br><br>
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password"><br><br>
+          <input type="submit" value="Submit">
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
