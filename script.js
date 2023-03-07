@@ -1,51 +1,39 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-analytics.js";
-import { getAuth } from "firebase/auth";
+// Initialize the FirebaseUI Widget using Firebase.
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBtZT2so2JKc8RZn6e4fuQGSMU26WHNef0",
-    authDomain: "testproject1-d81f0.firebaseapp.com",
-    projectId: "testproject1-d81f0",
-    storageBucket: "testproject1-d81f0.appspot.com",
-    messagingSenderId: "836098112901",
-    appId: "1:836098112901:web:af079986b12aae9b0118ec",
-    measurementId: "G-MZHBLGSZ7S"
-};
+ui.start('#firebaseui-auth-container', {
+    signInOptions: [
+      firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      
+    ],
+    // Other config options...
+  });
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// Script to open and close login modal
-var loginModal = document.getElementById('login-modal');
-var loginBtn = document.getElementById("login-btn");
-var closeBtn = document.getElementById("login-modal-close");
-
-// When the user clicks on the button, open the modal
-loginBtn.onclick = function login() {
-
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
-    
-    // Sign in with email and password
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            alert("Success!")
-      })
-      .catch((error) => {
-        // Handle login errors
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        alert(errorMessage);
-      });
-  
-  loginModal.style.display = "block";
-
-}
-
-// When the user clicks on the close button, close the modal
-closeBtn.onclick = function() {
-  loginModal.style.display = "none";
-}
-
-  
+var uiConfig = {
+    callbacks: {
+      signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+        // User successfully signed in.
+        // Return type determines whether we continue the redirect automatically
+        // or whether we leave that to developer to handle.
+        return true;
+      },
+      uiShown: function() {
+        // The widget is rendered.
+        // Hide the loader.
+        document.getElementById('loader').style.display = 'none';
+      }
+    },
+    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+    signInFlow: 'popup',
+    signInSuccessUrl: 'facebook.com',
+    signInOptions: [
+      // Leave the lines as is for the providers you want to offer your users.
+      
+      firebase.auth.EmailAuthProvider.PROVIDER_ID
+      
+    ],
+    // Terms of service url.
+    tosUrl: '<your-tos-url>',
+    // Privacy policy url.
+    privacyPolicyUrl: '<your-privacy-policy-url>'
+  };
