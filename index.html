@@ -1,27 +1,62 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <title>Login Pop-up Test</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <button onclick="document.getElementById('login-modal').style.display='block'">Log In</button>
+<head>
+  <meta charset=utf-8 />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email/Password Authentication Example</title>
 
-    <div id="login-modal" >
-      <div id="login-modal-content">
-        <span id="login-modal-close" onclick="document.getElementById('login-modal').style.display='none'">&times;</span>
-        <h2>Login</h2>
-        <form>
-          <!-- Login form fields go here -->
-          <label for="username">Username:</label>
-          <input type="text" id="username" name="username"><br><br>
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password"><br><br>
-          <input type="submit" value="Submit">
-        </form>
+  <link rel="stylesheet" href="main.css">
+  <script src="/__/firebase/9.14.0/firebase-app-compat.js"></script>
+  <script src="/__/firebase/9.14.0/firebase-auth-compat.js"></script>
+  <script src="/__/firebase/init.js"></script>
+
+</head>
+<body>
+<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+  <!-- Header section containing title -->
+  <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
+    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+      <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--8-col-desktop">
+        <a href="/"><h3>Log In Page</h3></a>
       </div>
     </div>
+  </header>
 
-    <script src="script.js"></script>
-  </body>
+  <main class="mdl-layout__content mdl-color--grey-100">
+    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+
+      <!-- Container for the demo -->
+      <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+        <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
+          <h2 class="mdl-card__title-text">Email &amp; Password Sign In/Sign Up</h2>
+        </div>
+        <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+          <p>Enter an email and password below and either sign in to an existing account or sign up</p>
+
+          <input class="mdl-textfield__input" style="display:inline;width:auto;" type="text" id="email" name="email" placeholder="Email"/>
+          &nbsp;&nbsp;&nbsp;
+          <input class="mdl-textfield__input" style="display:inline;width:auto;" type="password" id="password" name="password" placeholder="Password"/>
+          <br/><br/>
+          <button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in" name="signin">Sign In</button>
+          &nbsp;&nbsp;&nbsp;
+          <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-up" name="signup">Sign Up</button>
+          &nbsp;&nbsp;&nbsp;
+          <div class = "verificationlinkscontainer">
+          <a href ="mdl-button mdl-js-button mdl-button--raised" disabled id="quickstart-verify-email" name="verify-email">Send Email Verification</a>
+          &nbsp;&nbsp;&nbsp;
+          <a href ="mdl-button mdl-js-button mdl-button--raised" id="quickstart-password-reset" name="verify-email">Send Password Reset Email</a>
+          </div>
+          <!-- Container where we'll display the user details -->
+          <div class="quickstart-user-details-container">
+            Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
+            <div>Firebase auth <code>currentUser</code> object value:</div>
+            <pre><code id="quickstart-account-details">null</code></pre>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</body>
 </html>
