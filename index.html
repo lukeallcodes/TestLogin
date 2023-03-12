@@ -1,63 +1,63 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset=utf-8 />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email/Password Authentication Example</title>
-
-  <link rel="stylesheet" href="style.css">
-  <script src = "script.js"></script>
-  <script src="/__/firebase/9.14.0/firebase-app-compat.js"></script>
-  <script src="/__/firebase/9.14.0/firebase-auth-compat.js"></script>
-  <script src="/__/firebase/init.js"></script>
-
+  <title>Resume Uploader</title>
+  <!-- Include Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-storage.js"></script>
 </head>
 <body>
-<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <h1>Upload Your Resume</h1>
+  <input type="file" id="resume-input">
+  <button onclick="uploadResume()">Upload</button>
+  <div id="resume-display"></div>
+  
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+    apiKey: "AIzaSyAqpHa1GYZ6bv_klh8gfJNClO0cg6PnTIc",
+    authDomain: "storage-b44cc.firebaseapp.com",
+    projectId: "storage-b44cc",
+    storageBucket: "storage-b44cc.appspot.com",
+    messagingSenderId: "932528750400",
+    appId: "1:932528750400:web:17d5fd4f816f898edc84a5",
+    measurementId: "G-WRTRCZ17EX"
+  };
+    firebase.initializeApp(firebaseConfig);
 
-  <!-- Header section containing title -->
-  <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
-    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-      <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--8-col-desktop">
-        <a href="/"><h3>Log In Page</h3></a>
-      </div>
-    </div>
-  </header>
+    function uploadResume() {
+      const file = document.getElementById('resume-input').files[0];
+      if (!file) {
+        console.error('No file selected');
+        // add code to display error message to user
+        return;
+      }
+      const storageRef = firebase.storage().ref();
+      const resumeRef = storageRef.child('resumes/' + file.name);
+      resumeRef.put(file).then(() => {
+        console.log('Resume uploaded successfully');
+        displayResume();
+      }).catch(error => {
+        console.error('Error uploading resume:', error);
+        // add code to display error message to user
+      });
+    }
 
-  <main class="mdl-layout__content mdl-color--grey-100">
-    <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-
-      <!-- Container for the demo -->
-      <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-        <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
-          <h2 class="mdl-card__title-text">Email &amp; Password Sign In/Sign Up</h2>
-        </div>
-        <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-          <p>Enter an email and password below and either sign in to an existing account or sign up</p>
-
-          <input class="mdl-textfield__input" style="display:inline;width:auto;" type="text" id="email" name="email" placeholder="Email"/>
-          &nbsp;&nbsp;&nbsp;
-          <input class="mdl-textfield__input" style="display:inline;width:auto;" type="password" id="password" name="password" placeholder="Password"/>
-          <br/><br/>
-          <button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in" name="signin">Sign In</button>
-          &nbsp;&nbsp;&nbsp;
-          <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-up" name="signup">Sign Up</button>
-          &nbsp;&nbsp;&nbsp;
-          <div class = "verificationlinkscontainer">
-          <a href ="mdl-button mdl-js-button mdl-button--raised" disabled id="quickstart-verify-email" name="verify-email">Send Email Verification</a>
-          &nbsp;&nbsp;&nbsp;
-          <a href ="mdl-button mdl-js-button mdl-button--raised" id="quickstart-password-reset" name="verify-email">Send Password Reset Email</a>
-          </div>
-          <!-- Container where we'll display the user details -->
-          <div class="quickstart-user-details-container">
-            Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
-            <div>Firebase auth <code>currentUser</code> object value:</div>
-            <pre><code id="quickstart-account-details">null</code></pre>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </main>
-</div>
+    function displayResume() {
+      const storageRef = firebase.storage().ref();
+      const resumeRef = storageRef.child('resumes/resume.pdf'); // replace with your own file path
+      resumeRef.getDownloadURL().then(url => {
+        const resumeDisplay = document.getElementById('resume-display');
+        const iframe = document.createElement('iframe');
+        iframe.setAttribute('src', url);
+        iframe.setAttribute('width', '100%');
+        iframe.setAttribute('height', '800px');
+        resumeDisplay.appendChild(iframe);
+      }).catch(error => {
+        console.error('Error retrieving resume:', error);
+        // add code to display error message to user
+      });
+    }
+  </script>
 </body>
 </html>
