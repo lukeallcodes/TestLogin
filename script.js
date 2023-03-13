@@ -1,33 +1,29 @@
-function uploadResume() {
-  const file = document.getElementById('resume-input').files[0];
-  if (!file) {
-    console.error('No file selected');
-    // add code to display error message to user
-    return;
-  }
-  const storageRef = firebase.storage().ref();
-  const resumeRef = storageRef.child('resumes/' + file.name);
-  resumeRef.put(file).then(() => {
-    console.log('Resume uploaded successfully');
-    displayResume();
-  }).catch(error => {
-    console.error('Error uploading resume:', error);
-    // add code to display error message to user
-  });
-}
+import { initializeApp } from "firebase/app";
+import { getStorage } from "firebase/storage";
 
-function displayResume() {
-  const storageRef = firebase.storage().ref();
-  const resumeRef = storageRef.child('resumes/resume.pdf'); // replace with your own file path
-  resumeRef.getDownloadURL().then(url => {
-    const resumeDisplay = document.getElementById('resume-display');
-    const iframe = document.createElement('iframe');
-    iframe.setAttribute('src', url);
-    iframe.setAttribute('width', '100%');
-    iframe.setAttribute('height', '800px');
-    resumeDisplay.appendChild(iframe);
-  }).catch(error => {
-    console.error('Error retrieving resume:', error);
-    // add code to display error message to user
-  });
-}
+const firebaseConfig = {
+    apiKey: "AIzaSyAqpHa1GYZ6bv_klh8gfJNClO0cg6PnTIc",
+    authDomain: "storage-b44cc.firebaseapp.com",
+    projectId: "storage-b44cc",
+    storageBucket: "storage-b44cc.appspot.com",
+    messagingSenderId: "932528750400",
+    appId: "1:932528750400:web:17d5fd4f816f898edc84a5",
+    measurementId: "G-WRTRCZ17EX"
+  };
+
+const app = initializeApp(firebaseConfig);
+const storage = getStorage();
+const storageRef = ref(storage);
+
+
+function uploadFile() {
+    const file = document.getElementById('fileInput').files[0];
+    const filename = file.name; // set filename variable to the name of the uploaded file
+    const imagesRef = ref(storage, 'images');
+    const sparkyRef = ref(storage, filename); // use filename variable to set the path in Firebase Storage
+  
+    uploadBytes(storageRef, file).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+    });
+  }
+  
