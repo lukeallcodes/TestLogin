@@ -25,5 +25,6 @@ function uploadFile() {
     uploadBytes(storageRef, file).then((snapshot) => {
         console.log('Uploaded a blob or file!');
     });
+    print();
   }
   
