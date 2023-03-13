@@ -11,5 +11,15 @@
     <button type="button" onclick="uploadFile()">Upload</button>
   </form>
 
+  <img id="uploadedImage" src="" alt="Uploaded Image">
+  
+  <script>
+    function uploadFile() {
+      const fileInput = document.getElementById("fileInput");
+      const uploadedImage = document.getElementById("uploadedImage");
+
+      uploadedImage.src = URL.createObjectURL(fileInput.files[0]);
+    }
+  </script>
 </body>
 </html>
