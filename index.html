@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Display PDF in Browser</title>
+	<title>Convert PDF to Text</title>
+	<!-- include PDF.js library -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
 </head>
 <body>
-	<h1>Display PDF in Browser</h1>
+	<h1>Convert PDF to Text</h1>
 	<form>
 		<label for="pdf-file">Choose a PDF file:</label>
 		<input type="file" id="pdf-file" name="pdf-file">
 	</form>
 	<div>
-		<embed src="" type="application/pdf" width="100%" height="600px" id="pdf-viewer">
+		<textarea id="text-content" rows="10" cols="80"></textarea>
 	</div>
 	<script>
 		// get the file input element
@@ -19,10 +21,42 @@
 		fileInput.addEventListener('change', function(event) {
 			// get the selected file
 			const file = event.target.files[0];
-			// set the embed element's src attribute to the file's URL
-			const pdfViewer = document.getElementById('pdf-viewer');
-			pdfViewer.setAttribute('src', URL.createObjectURL(file));
+			// create a new FileReader to read the file
+			const reader = new FileReader();
+			// add an event listener to handle file reading
+			reader.addEventListener('load', function(event) {
+				// get the file content as a Uint8Array
+				const fileContent = new Uint8Array(event.target.result);
+				// load the file content using PDF.js
+				PDFJS.getDocument(fileContent).promise.then(function(pdf) {
+					// iterate over each page in the PDF
+					const textContent = [];
+					for (let i = 1; i <= pdf.numPages; i++) {
+						pdf.getPage(i).then(function(page) {
+							// get the text content of the page
+							page.getTextContent().then(function(content) {
+								// concatenate the text content of each item in the array
+								const pageText = content.items.map(function(item) {
+									return item.str;
+								}).join(' ');
+								textContent.push(pageText);
+								// if this is the last page, display the text content
+								if (i == pdf.numPages) {
+									displayTextContent(textContent.join('\n'));
+								}
+							});
+						});
+					}
+				});
+			});
+			reader.readAsArrayBuffer(file);
 		});
+
+		// function to display the text content in the textarea
+		function displayTextContent(text) {
+			const textArea = document.getElementById('text-content');
+			textArea.value = text;
+		}
 	</script>
 </body>
 </html>
