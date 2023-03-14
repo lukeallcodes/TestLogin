@@ -1,51 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Convert PDF to Text</title>
+	<title>Login Page</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src = "style.css"></script>
+	
 </head>
 <body>
-	<h1>Convert PDF to Text</h1>
-	<form>
-		<label for="pdf-file">Choose a PDF file:</label>
-		<input type="file" id="pdf-file" name="pdf-file">
+
+	<h2>Login Form</h2>
+
+	<form action="/action_page.php">
+		<div class="imgcontainer">
+			<img src="avatar.png" alt="Avatar" class="avatar">
+		</div>
+
+		<div class="container">
+			<label for="uname"><b>Username</b></label>
+			<input type="text" placeholder="Enter Username" name="uname" required>
+
+			<label for="psw"><b>Password</b></label>
+			<input type="password" placeholder="Enter Password" name="psw" required>
+
+			<button type="submit", value = "login">Login</button>
+			<label>
+				<input type="checkbox" checked="checked" name="remember"> Remember me
+			</label>
+		</div>
+
+		<div class="container" style="background-color:#f1f1f1">
+			<button type="button" class="cancelbtn">Cancel</button>
+			<span class="psw">Forgot <a href="#">password?</a></span>
+		</div>
 	</form>
-	<div>
-		<textarea id="text-output" rows="10" cols="80" readonly></textarea>
-	</div>
-	<script>
-		// get the file input element
-		const fileInput = document.getElementById('pdf-file');
-		// add an event listener to handle file selection
-		fileInput.addEventListener('change', function(event) {
-			// get the selected file
-			const file = event.target.files[0];
-			// create a FileReader to read the file contents
-			const reader = new FileReader();
-			reader.readAsArrayBuffer(file);
-			reader.onload = function() {
-				// create a new Uint8Array from the file data
-				const fileData = new Uint8Array(reader.result);
-				// use PyPDF2 to extract the text from the PDF file
-				const pdf = window['pdfjs-dist/build/pdf'];
-				pdf.getDocument(fileData).promise.then(function(pdfDoc) {
-					let text = '';
-					for (let i = 1; i <= pdfDoc.numPages; i++) {
-						pdfDoc.getPage(i).then(function(page) {
-							page.getTextContent().then(function(content) {
-								content.items.forEach(function(item) {
-									text += item.str + ' ';
-								});
-								if (i == pdfDoc.numPages) {
-									// set the text area's value to the extracted text
-									const textOutput = document.getElementById('text-output');
-									textOutput.value = text;
-								}
-							});
-						});
-					}
-				});
-			};
-		});
-	</script>
+
 </body>
 </html>
